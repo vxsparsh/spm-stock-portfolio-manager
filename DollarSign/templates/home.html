@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}
+SPM - Home
+{% endblock %}
+
+{% block content %}
+    <br>
+    {% if stocks and not stocks.Error %}
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            {{ stocks.companyName }}
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group">
+                                <li class="list-group-item">Symbol: {{ stocks.symbol }}</li>
+                                <li class="list-group-item">Primary Exchange: {{ stocks.primaryExchange }}</li>
+                                <li class="list-group-item">Open: {{ stocks.open }}</li>
+                                <li class="list-group-item">Close: {{ stocks.close }}</li>
+                                <li class="list-group-item">High: {{ stocks.high }}</li>
+                                <li class="list-group-item">Low: {{ stocks.low }}</li>
+                                <li class="list-group-item">Latest Price: {{ stocks.latestPrice }}</li>
+                                <li class="list-group-item">Previous Close: {{ stocks.previousClose }}</li>
+                                <li class="list-group-item">Market Cap: {{ stocks.marketCap }}</li>
+                                <li class="list-group-item">PE Ratio: {{ stocks.peRatio }}</li>
+                                <li class="list-group-item">Week52High: {{ stocks.week52High }}</li>
+                                <li class="list-group-item">Week52Low: {{ stocks.week52Low }}</li>
+                                <li class="list-group-item">YTD Change: {{ stocks.ytdChange }}</li>
+                            </ul>
+                        </div>
+                    </div> <br>
+                </div>
+            </div>
+        </div>
+    {% elif stocks.Error %}
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="alert alert-danger" role="alert">
+                        {{ stocks.Error }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="jumbotron text-center">
+            <h1 class="display-4">Welcome to SPM</h1> <br>
+            <p class="lead">"Welcome to SPM, your premier stock portfolio management financial tool. Our platform is designed to empower you with the tools you need to take control of your investments and make informed decisions that can shape your financial future.
+                    With $ you can easily manage your stock portfolio, including tracking multiple stock investments.
+                    Access real-time stock market data, including stock prices, historical performance.
+                    Make educated investment decisions based on comprehensive data and analysis.
+                    keeps track of the stocks you own and lays down the fundamental variables like previous opening closing, PE ration, 52wk high low - which are important fundamental variables, also calcualtes current net stock value in order to keep track of the financial strength / keeps track of your investment in securities</p>
+            <hr class="my-4">
+            
+            <p class="lead">
+                <a class="btn btn-success btn-lg" href="{% url 'portfolio' %}" role="button">Portfolio</a>
+            </p>
+        </div>
+    {% endif %}
+{% endblock %}

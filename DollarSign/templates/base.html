@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/a52f64c00d.js" crossorigin="anonymous"></script>
+    <!-- Custom CSS -->
+    <style>
+        /* Custom style for the navbar background */
+        .navbar {
+            background-color: rgb(15, 15, 15); /* Adjust the background color */
+        }
+
+        /* Custom styles for the navigation links */
+        .navbar-nav .nav-link {
+            color: black; /* Adjust the link text color */
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: rgb(15,15,15); /* Adjust the link text color on hover */
+        }
+    </style> 
+    
+    <!-- Page Title -->
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
+</head>
+<body>
+   
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" href="{% url 'home' %}">SPM</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'home' %}"><i class="fa-solid fa-house-user fa-xs" style="margin-right: 5px;"></i>Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'about' %}"><i class="fa-regular fa-circle-question fa-xs" style="margin-right: 5px;"></i>About</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'portfolio' %}"><i class="fa-solid fa-square-poll-vertical fa-xs" style="margin-right: 5px;"></i>Portfolio</a>
+            </li>
+        </ul>
+        <form method="POST" action="{% url 'home' %}" class="form-inline my-2 my-lg-0 ml-auto">
+            {% csrf_token %}
+            <div class="input-group input-group-sm">
+                <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="stock_ticker">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-light" type="submit"><i class="fa-solid fa-magnifying-glass fa-xs"></i></button>
+                </div>
+            </div>
+        </form>
+        <ul class="navbar-nav ml-auto">
+        
+            <!--- Display the username of the logged-in user here  --->
+            <li class="nav-item">
+                <span class="nav-link"><i class="fa-regular fa-circle-user fa-xs" style="margin-right: 5px;"></i>{{ user.username }}</span>
+            </li>
+
+            <!--- Logout --->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket fa-xs" style="margin-right: 5px;"></i>Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+    <!-- Page Content -->
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery, Popper.js, Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+</html>

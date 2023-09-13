@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}
+SPM - Portfolio
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Stocks Portfolio</h2>
+    <hr>
+    <form method="POST" action="{% url 'portfolio' %}" class="form-inline">
+        {% csrf_token %}
+        <div class="form-group">
+            <input class="form-control" type="text" placeholder="Stock Ticker or Name" name="ticker">
+        </div>
+        <div class="form-group ml-2">
+            <input class="form-control" type="number" placeholder="Number of Shares" name="shares">
+        </div>
+        <div class="form-group ml-2">
+            <input class="form-control" type="date" placeholder="Purchase Date" name="purchase_date">
+        </div>
+        <button class="btn btn-success ml-2" type="submit"><i class="fa-solid fa-circle-plus fa-xs" style="margin-right: 5px;"></i>Add Stock</button>
+    </form>
+</div>
+
+<div class="container mt-4">
+    {% block messages %}
+        {% if messages %}
+            <div class="row">
+                <div class="col-md-6">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message|safe }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    {% endblock %}
+    <h4 class="mt-4">Current Net Stock Value: ${{ total_portfolio_value|default:"N/A"|floatformat:-2 }}</h4> <br>
+    {% if stockdata %}
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Symbol</th>
+                    <th scope="col">Company</th>
+                    <th scope="col">Shares</th>
+                    <th scope="col">Purchase Date</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Previous Close</th>
+                    <th scope="col">Market Cap</th>
+                    <th scope="col">PE Ratio</th>
+                    <th scope="col">52Wk High</th>
+                    <th scope="col">52Wk Low</th>
+                    <th scope="col">Current Value</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stock in stockdata %}
+                <tr>
+                    <td>{{ stock.symbol }}</td>
+                    <td>{{ stock.companyName }}</td>
+                    <td>{{ stock.shares }}</td>
+                    <td>{{ stock.purchase_date|date:"Y-m-d" }}</td>
+                    <td>${{ stock.latestPrice|default:"N/A"|floatformat:-2 }}</td>
+                    <td>${{ stock.previousClose|default:"N/A"|floatformat:-2 }}</td>
+                    <td>${{ stock.marketCap|default:"N/A"|intcomma }}</td>
+                    <td>{{ stock.peRatio|default:"N/A" }}</td>
+                    <td>${{ stock.week52High|default:"N/A" }}</td>
+                    <td>${{ stock.week52Low|default:"N/A" }}</td>
+                    <td>${{ stock.current_value|default:"N/A"|floatformat:-2 }}</td>
+                    <td>
+                        {% if stock.symbol and stock.symbol != 'N/A' %}
+                        <a href="{% url 'delete_stock' stock.symbol %}" class="btn btn-danger btn-sm">Delete</a>
+                        {% else %}
+                        N/A
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
